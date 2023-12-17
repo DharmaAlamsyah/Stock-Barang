@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
     $password = $_POST["password"];
 
     // Menyimpan data ke database
-    $query = "INSERT INTO `login` (`iduser`, `email`, `password`) VALUES ('', '$email', '$password')";
+    $query = "INSERT INTO login (`email`, `password`) VALUES ('$email', '$password')";
     $result = mysqli_query($conn, $query);
 
     if ($result) {

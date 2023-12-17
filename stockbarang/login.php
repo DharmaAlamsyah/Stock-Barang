@@ -1,7 +1,7 @@
 
 <?php
 //menghubungkan dengan config.php
-require 'config.php';
+require 'function.php';
 
 //cek login, terdaftar atau tidak
 if(isset($_POST["login"])){

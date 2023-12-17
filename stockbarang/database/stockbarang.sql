@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 16 Des 2023 pada 15.23
+-- Waktu pembuatan: 17 Des 2023 pada 14.12
 -- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Versi PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,8 +31,18 @@ CREATE TABLE `keluar` (
   `idkeluar` int(11) NOT NULL,
   `idbarang` int(11) NOT NULL,
   `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
-  `penerima` varchar(25) NOT NULL
+  `penerima` varchar(25) NOT NULL,
+  `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `keluar`
+--
+
+INSERT INTO `keluar` (`idkeluar`, `idbarang`, `tanggal`, `penerima`, `qty`) VALUES
+(1, 2, '2023-12-17 04:43:35', 'Pembeli', 100),
+(2, 2, '2023-12-17 04:44:00', 'Pembeli', 100),
+(3, 3, '2023-12-17 05:22:50', 'Hilang', 10000);
 
 -- --------------------------------------------------------
 
@@ -63,8 +73,17 @@ CREATE TABLE `masuk` (
   `idmasuk` int(11) NOT NULL,
   `idbarang` int(11) NOT NULL,
   `tanggal` timestamp NOT NULL DEFAULT current_timestamp(),
-  `keterangan` varchar(25) NOT NULL
+  `keterangan` varchar(25) NOT NULL,
+  `qty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `masuk`
+--
+
+INSERT INTO `masuk` (`idmasuk`, `idbarang`, `tanggal`, `keterangan`, `qty`) VALUES
+(2, 2, '2023-12-17 04:30:59', 'Ahmad', 500),
+(3, 3, '2023-12-17 05:22:31', 'Toko Handphone', 500);
 
 -- --------------------------------------------------------
 
@@ -80,8 +99,22 @@ CREATE TABLE `stock` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data untuk tabel `stock`
+--
+
+INSERT INTO `stock` (`idbarang`, `namabarang`, `deskripsi`, `stock`) VALUES
+(1, 'Samsung', 'Smartphone', 10),
+(2, 'iPhone 13 Pro', 'Smartphone', 301);
+
+--
 -- Indexes for dumped tables
 --
+
+--
+-- Indeks untuk tabel `keluar`
+--
+ALTER TABLE `keluar`
+  ADD PRIMARY KEY (`idkeluar`);
 
 --
 -- Indeks untuk tabel `login`
@@ -106,6 +139,12 @@ ALTER TABLE `stock`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `keluar`
+--
+ALTER TABLE `keluar`
+  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT untuk tabel `login`
 --
 ALTER TABLE `login`
@@ -115,13 +154,13 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT untuk tabel `masuk`
 --
 ALTER TABLE `masuk`
-  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
