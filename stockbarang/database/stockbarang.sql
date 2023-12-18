@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Des 2023 pada 14.12
+-- Waktu pembuatan: 18 Des 2023 pada 05.36
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 7.4.33
 
@@ -42,7 +42,9 @@ CREATE TABLE `keluar` (
 INSERT INTO `keluar` (`idkeluar`, `idbarang`, `tanggal`, `penerima`, `qty`) VALUES
 (1, 2, '2023-12-17 04:43:35', 'Pembeli', 100),
 (2, 2, '2023-12-17 04:44:00', 'Pembeli', 100),
-(3, 3, '2023-12-17 05:22:50', 'Hilang', 10000);
+(3, 3, '2023-12-17 05:22:50', 'Hilang', 10000),
+(4, 4, '2023-12-17 17:20:34', 'Toko', 50),
+(5, 1, '2023-12-18 04:33:45', 'anton', 5);
 
 -- --------------------------------------------------------
 
@@ -85,6 +87,17 @@ INSERT INTO `masuk` (`idmasuk`, `idbarang`, `tanggal`, `keterangan`, `qty`) VALU
 (2, 2, '2023-12-17 04:30:59', 'Ahmad', 500),
 (3, 3, '2023-12-17 05:22:31', 'Toko Handphone', 500);
 
+--
+-- Trigger `masuk`
+--
+DELIMITER $$
+CREATE TRIGGER `stock-masuk` AFTER INSERT ON `masuk` FOR EACH ROW BEGIN
+UPDATE stock SET stock=stock+new.qty
+WHERE idmasuk=new.idmasuk;
+END
+$$
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -103,8 +116,9 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`idbarang`, `namabarang`, `deskripsi`, `stock`) VALUES
-(1, 'Samsung', 'Smartphone', 10),
-(2, 'iPhone 13 Pro', 'Smartphone', 301);
+(1, 'Samsung', 'Smartphone', 5),
+(2, 'iPhone 13 Pro', 'Smartphone', 301),
+(4, 'Xiomi Redmi Note 20', 'Smartphone', 150);
 
 --
 -- Indexes for dumped tables
@@ -142,7 +156,7 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT untuk tabel `keluar`
 --
 ALTER TABLE `keluar`
-  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idkeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `login`
@@ -154,13 +168,13 @@ ALTER TABLE `login`
 -- AUTO_INCREMENT untuk tabel `masuk`
 --
 ALTER TABLE `masuk`
-  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idbarang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
