@@ -66,7 +66,6 @@ if(isset($_POST['addbarangkeluar'])){
     }    
 }
 
-
 // Update Info Barang 
 if (isset($_POST['updatebarang'])){
     $idbarang = $_POST['idbarang'];
@@ -98,9 +97,9 @@ if (isset($_POST['hapusbarang'])){
 
 // Edit Barang Masuk
 if (isset($_POST['updatebarangmasuk'])) {
-    $idm = $_POST['idmasuk'];
+    $idk = $_POST['idk'];
     $idbarang = $_POST['idbarang'];
-    $deskripsi = $_POST['keterangan'];
+    $penerima = $_POST['penerima'];
     $qty = $_POST['qty'];
 
     // Ambil data stok barang
@@ -109,27 +108,13 @@ if (isset($_POST['updatebarangmasuk'])) {
     $stocksekarang = $stocknya['stock'];
 
     // Ambil data jumlah barang masuk
-    $qtysekarang = mysqli_query($conn, "SELECT * FROM masuk WHERE idmasuk='$idm'");
+    $qtysekarang = mysqli_query($conn, "SELECT * FROM masuk WHERE idkeluar='$idk'");
     $qtynya = mysqli_fetch_array($qtysekarang);
     $qtysekarang = $qtynya['qty'];
 
     // Perhitungan dan update stok barang
     if ($qty > $qtysekarang) {
         $selisih = $qty - $qtysekarang;
-        $kurangin = $stocksekarang - $selisih;
-
-        // Update stok barang
-        $kurangistocknya = mysqli_query($conn, "UPDATE stock SET stock='$kurangin' WHERE idbarang='$idbarang'");
-        $updatenya = mysqli_query($conn, "UPDATE masuk SET qty='$qty', keterangan='$deskripsi' WHERE idmasuk='$idm'");
-
-        if ($kurangistocknya && $updatenya) {
-            header("Location: masuk.php");
-        } else {
-            echo "gagal";
-            header("Location: masuk.php");
-        }
-    } else {
-        $selisih = $qtysekarang - $qty;
         $kurangin = $stocksekarang + $selisih;
 
         // Update stok barang
@@ -140,7 +125,21 @@ if (isset($_POST['updatebarangmasuk'])) {
             header("Location: masuk.php");
         } else {
             echo "gagal";
+            header("Location: index.php");
+        }
+    } else {
+        $selisih = $qtysekarang - $qty;
+        $kurangin = $stocksekarang - $selisih;
+
+        // Update stok barang
+        $kurangistocknya = mysqli_query($conn, "UPDATE stock SET stock='$kurangin' WHERE idbarang='$idbarang'");
+        $updatenya = mysqli_query($conn, "UPDATE masuk SET qty='$qty', keterangan='$deskripsi' WHERE idmasuk='$idm'");
+
+        if ($kurangistocknya && $updatenya) {
             header("Location: masuk.php");
+        } else {
+            echo "gagal";
+            header("Location: index.php");
         }
     }
 }
@@ -150,9 +149,18 @@ if (isset($_POST['updatebarangmasuk'])) {
 if (isset($_POST['hapusbarangmasuk'])) {
     $idm = $_POST['idmasuk'];
     $idbarang = $_POST['idbarang'];
+    $qty = $_POST['kty'];
 
-    $hapus = mysqli_query($conn, "DELETE FROM masuk WHERE idmasuk='$idm'");
-    if ($hapus) {
+    $getdatastock = mysqli_query($conn, "SELECT * FROM stock WHERE idbarang='$idbarang'");
+    $data = mysqli_fetch_array($getdatastock);
+    $stock = $data['stock'];
+
+    $selisih = $stock - $qty;
+
+    $update = mysqli_query($conn, "UPDATE stock SET stock='$selisih' WHERE idbarang='$idbarang'");
+    $hapusdata = mysqli_query($conn, "DELETE FROM masuk WHERE idmasuk='$idmasuk'");
+    
+    if ($update && $hapusdata) {
         header("Location: masuk.php");
     } else {
         echo "gagal";
@@ -161,4 +169,75 @@ if (isset($_POST['hapusbarangmasuk'])) {
 }
 
 // Edit Barang Keluar
+if (isset($_POST['updatebarangkeluar'])) {
+    $idk = $_POST['idkeluar'];
+    $idbarang = $_POST['idbarang'];
+    $penerima = $_POST['penerima'];
+    $qty = $_POST['qty'];
+
+    // Ambil data stok barang
+    $lihatstock = mysqli_query($conn, "SELECT * FROM stock WHERE idbarang = '$idbarang'");
+    $stocknya = mysqli_fetch_array($lihatstock);
+    $stocksekarang = $stocknya['stock'];
+
+    // Ambil data jumlah barang masuk
+    $qtysekarang = mysqli_query($conn, "SELECT * FROM keluar WHERE idkeluar='$idk'");
+    $qtynya = mysqli_fetch_array($qtysekarang);
+    $qtysekarang = $qtynya['qty'];
+
+    // Perhitungan dan update stok barang
+    if ($qty > $qtysekarang) {
+        $selisih = $qty - $qtysekarang;
+        $kurangin = $stocksekarang - $selisih;
+
+        // Update stok barang
+        $kurangistocknya = mysqli_query($conn, "UPDATE stock SET stock='$kurangin' WHERE idbarang='$idbarang'");
+        $updatenya = mysqli_query($conn, "UPDATE keluar SET qty='$qty', penerima='$penerima' WHERE idkeluar='$idk'");
+
+        if ($kurangistocknya && $updatenya) {
+            header("Location: keluar.php");
+        } else {
+            echo "gagal";
+            header("Location: keluar.php");
+        }
+    } else {
+        $selisih = $qtysekarang - $qty;
+        $kurangin = $stocksekarang + $selisih;
+
+        // Update stok barang
+        $kurangistocknya = mysqli_query($conn, "UPDATE stock SET stock='$kurangin' WHERE idbarang='$idbarang'");
+        $updatenya = mysqli_query($conn, "UPDATE keluar SET qty='$qty', penerima='$penerima' WHERE idkeluar='$idk'");
+
+        if ($kurangistocknya && $updatenya) {
+            header("Location: keluar.php");
+        } else {
+            echo "gagal";
+            header("Location: keluar.php");
+        }
+    }
+}
+
+
+// Hapus Barang Keluar
+if (isset($_POST['hapusbarangkeluar'])) {
+    $idk = $_POST['idkeluar'];
+    $idbarang = $_POST['idbarang'];
+    $qty = $_POST['kty'];
+
+    $getdatastock = mysqli_query($conn, "SELECT * FROM stock WHERE idbarang='$idbarang'");
+    $data = mysqli_fetch_array($getdatastock);
+    $stock = $data['stock'];
+
+    $selisih = $stock + $qty;
+
+    $update = mysqli_query($conn, "UPDATE stock SET stock='$selisih' WHERE idbarang='$idbarang'");
+    $hapusdata = mysqli_query($conn, "DELETE FROM keluar WHERE idkeluar='$idk'");
+    
+    if ($update && $hapusdata) {
+        header("Location: keluar.php");
+    } else {
+        echo "gagal";
+        header("Location: keluar.php");
+    } 
+}
 ?>

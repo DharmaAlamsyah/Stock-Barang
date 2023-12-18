@@ -106,7 +106,7 @@ require 'cek.php';
                                             </td>
                                         </tr>
                                             <!-- Edit -->
-                                            <div class="modal fade" id="edit<?= $idbarang; ?>">
+                                            <div class="modal fade" id="edit<?= $idm; ?>">
                                                 <div class="modal-dialog">
                                                 <div class="modal-content">
 

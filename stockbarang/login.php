@@ -63,9 +63,6 @@ if(!isset($_SESSION['log'])){
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="card-footer text-center py-3">
-                                        <div class="small"><a href="register.php">Create account? Go to register</a></div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
